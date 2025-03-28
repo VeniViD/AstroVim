@@ -18,17 +18,19 @@ return {
   { import = "astrocommunity.editing-support.rainbow-delimiters-nvim"},
   { import = "astrocommunity.editing-support.vim-move"},
 
-  { import = "astrocommunity.indent.indent-rainbowline"};
+  { import = "astrocommunity.file-explorer.telescope-file-browser-nvim"};
+
+--   { import = "astrocommunity.indent.indent-rainbowline"}; -- выдает ошибку
 
   { import = "astrocommunity.motion.leap-nvim"};
 
   { import = "astrocommunity.pack.cs-omnisharp"};
-  { import = "astrocommunity.pack.godot"};
+--   { import = "astrocommunity.pack.godot"}; -- выдает ошибку
   { import = "astrocommunity.pack.lua"};
   { import = "astrocommunity.pack.python"};
 
   { import = "astrocommunity.recipes.telescope-nvchad-theme" },
-  { import = "astrocommunity.recipes.vscode-icons" },
+--   { import = "astrocommunity.recipes.vscode-icons" }, --вылетает при открытии neo-tree
   { import = "astrocommunity.recipes.vscode" },
   { import = "astrocommunity.recipes.auto-session-restore" },
   { import = "astrocommunity.recipes.heirline-vscode-winbar" },
