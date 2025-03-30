@@ -85,5 +85,29 @@ return {
       )
     end,
   },
---   { "folke/neodev.nvim", opts = {} },
+  --   { "folke/neodev.nvim", opts = {} },
+  -- Lazy
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function() require("chatgpt").setup() end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim", -- optional
+      "nvim-telescope/telescope.nvim",
+    },
+    opts = {
+      api_key_cmd = vim.fn.system "pass openai-api-key",
+      extra_curl_params = {
+        "-H",
+        "Origin: https://example.com",
+        "-H",
+        "X-Custom-Header: SomeValue",
+        "--data",
+        '{"key1":"value1", "key2":"value2"}', -- Важно: экранируйте кавычки!
+      },
+    },
+  },
+  vim.keymap.set("n", "<F8>", ":CompilerOpen<CR>", { desc = "Run Compiler" }),
 }
