@@ -50,6 +50,7 @@ M.register_net_dap = function()
           local dll = ensure_dll()
           return dll.relative_project_path
         end,
+        console = "integratedTerminal",
       },
     }
   end
