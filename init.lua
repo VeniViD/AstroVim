@@ -17,3 +17,6 @@ end
 
 require "lazy_setup"
 require "polish"
+vim.o.scrolloff = 8
+vim.o.swapfile = false
+vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"

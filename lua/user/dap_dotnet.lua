@@ -50,7 +50,7 @@ M.register_net_dap = function()
           local dll = ensure_dll()
           return dll.relative_project_path
         end,
-        console = "integratedTerminal",
+        console = "externalTerminal",
       },
     }
   end
@@ -58,9 +58,17 @@ M.register_net_dap = function()
   dap.listeners.before["event_terminated"]["easy-dotnet"] = function() debug_dll = nil end
 
   dap.adapters.coreclr = {
+    -- type = "executable",
+    -- command = "netcoredbg",
+    -- args = { "--interpreter=vscode" },
     type = "executable",
-    command = "netcoredbg",
-    args = { "--interpreter=vscode" },
+    command = "/usr/bin/konsole",
+    args = {
+      "--hold",
+      "-e",
+      "netcoredbg",
+      "--interpreter=vscode",
+    },
   }
 end
 

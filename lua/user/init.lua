@@ -2,6 +2,7 @@ local dap_dotnet = require "user.dap_dotnet"
 dap_dotnet.register_net_dap()
 
 return {
+  -- кастомные keymaps
   {
     "mfussenegger/nvim-dap",
     opts = function(_, opts)
@@ -11,7 +12,7 @@ return {
           type = "executable",
           command = vim.fn.exepath "netcoredbg",
           args = { "--interpreter=vscode" },
-          -- console = "internalConsole",
+          console = "externalConsole",
         }
       end
 
@@ -40,7 +41,7 @@ return {
             end,
             program = function()
               require("overseer").enable_dap()
-              local dll = ensure_dll()
+
               return dll.relative_dll_path
             end,
             cwd = function()

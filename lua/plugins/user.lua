@@ -3,10 +3,21 @@
 -- You can also add or configure plugins by creating files in this `plugins/` folder
 -- PLEASE REMOVE THE EXAMPLES YOU HAVE NO INTEREST IN BEFORE ENABLING THIS FILE
 -- Here are some examples:
+vim.keymap.set("n", "<F8>", ":CompilerOpen<CR>")
+vim.keymap.set("n", "K", function() require("hover").hover() end)
+vim.keymap.set("n", "gK", function() require("hover").hover_select() end)
+vim.keymap.set("n", "<C-p>", function()
+  local ok, easy_dotnet = pcall(require, "easy-dotnet")
+  if ok then
+    easy_dotnet.run_project()
+  else
+    print "Easy-dotnet не загружен"
+  end
+end)
+vim.keymap.set("n", "<C-n>", function() require("hover").hover_switch "next" end)
 
 ---@type LazySpec
 return {
-
   -- == Examples of Adding Plugins ==
 
   "andweeb/presence.nvim",
@@ -217,17 +228,17 @@ return {
       vim.api.nvim_create_user_command("Secrets", function() dotnet.secrets() end, {})
 
       -- Example keybinding
-      vim.keymap.set("n", "<C-p>", function() dotnet.run_project() end)
+      -- vim.keymap.set("n", "<C-p>", function() dotnet.run_project() end)
     end,
   },
   {
     "saghen/blink.cmp",
-    version = "*",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    version = "1.*",
     config = function()
       require("blink.cmp").setup {
-        fuzzy = { implementation = "prefer_rust_with_warning" },
         sources = {
-          default = { "lsp", "easy-dotnet", "path" },
+          default = { "lsp", "path", "snippets", "buffer", "easy-dotnet" },
           providers = {
             ["easy-dotnet"] = {
               name = "easy-dotnet",
@@ -238,66 +249,27 @@ return {
             },
           },
         },
-        opts = {
-          keymap = { preset = "default" },
-        },
+        -- opts = {
+        --   keymap = { preset = "default" },
       }
     end,
-  },
-  vim.keymap.set("n", "<F8>", ":CompilerOpen<CR>", { desc = "Run Compiler" }),
-  vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" }),
-  vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" }),
-  vim.keymap.set(
-    "n",
-    "<C-p>",
-    function() require("hover").hover_switch "previous" end,
-    { desc = "hover.nvim (previous source)" }
-  ),
-  vim.keymap.set(
-    "n",
-    "<C-n>",
-    function() require("hover").hover_switch "next" end,
-    { desc = "hover.nvim (next source)" }
-  ),
-}, {
-  ---@module 'blink.cmp'
-  ---@type blink.cmp.Config
-  opts = {
-    -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-    -- 'super-tab' for mappings similar to vscode (tab to accept)
-    -- 'enter' for enter to accept
-    -- 'none' for no mappings
-    --
-    -- All presets have the following mappings:
-    -- C-space: Open menu or open docs if already open
-    -- C-n/C-p or Up/Down: Select next/previous item
-    -- C-e: Hide menu
-    -- C-k: Toggle signature help (if signature.enabled = true)
-    --
-    -- See :h blink-cmp-config-keymap for defining your own keymap
-    keymap = { preset = "default" },
-
-    appearance = {
-      -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-      -- Adjusts spacing to ensure icons are aligned
-      nerd_font_variant = "mono",
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+      keymap = { preset = "default" },
+      appearance = {
+        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = "mono",
+      },
+      completion = { documentation = { auto_show = false } },
     },
-
-    -- (Default) Only show the documentation popup when manually triggered
-    completion = { documentation = { auto_show = false } },
-
-    -- Default list of enabled providers defined so that you can extend it
-    -- elsewhere in your config, without redefining it, due to `opts_extend`
-    sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
-    },
-
-    -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
-    -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-    -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-    --
-    -- See the fuzzy documentation for more information
-    fuzzy = { implementation = "prefer_rust_with_warning" },
+    opts_extend = { "sources.default" },
   },
-  opts_extend = { "sources.default" },
+  {
+    "dccsillag/magma-nvim",
+    build = ":UpdateRemotePlugins",
+    config = function() vim.g.magma_automatically_open_output = true end,
+  },
 }

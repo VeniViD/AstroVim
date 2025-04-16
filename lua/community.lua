@@ -22,7 +22,7 @@ return {
   -- { import = "astrocommunity.file-explorer.mini-files" },
 
   { import = "astrocommunity.git.neogit" },
-  --   { import = "astrocommunity.indent.indent-rainbowline"}; -- выдает ошибку
+  -- { import = "astrocommunity.indent.indent-rainbowline" }, -- выдает ошибку
 
   { import = "astrocommunity.motion.leap-nvim" },
 
